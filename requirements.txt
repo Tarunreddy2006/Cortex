@@ -1,0 +1,7 @@
+# Cortex - Phase 1 Dependencies
+# Python 3.13 / ARM64 Android compatible
+
+# Note: Only pure-Python or pre-compiled ARM64 Chaquopy wheels should be used in Android runtime.
+# Standard library (sqlite3, json, dataclasses, re, datetime, typing, hashlib) is fully available in Chaquopy.
+pytest>=8.0.0
+pytest-cov>=4.1.0

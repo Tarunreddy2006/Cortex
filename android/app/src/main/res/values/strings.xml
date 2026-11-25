@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cortex</string>
+    <string name="notification_listener_service_name">Cortex Notification Listener</string>
+    <string name="notification_listener_service_description">Captures and normalizes notifications from authorized applications while strictly excluding financial applications.</string>
+</resources>

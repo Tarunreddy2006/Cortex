@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Cortex — Your Another Brain</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">C</div>
+        <div>
+          <div class="brand-title">CORTEX</div>
+          <div class="brand-subtitle">YOUR ANOTHER BRAIN</div>
+        </div>
+      </div>
+      <div id="header-actions" style="display: flex; gap: 8px; align-items: center;">
+        <button class="btn btn-secondary btn-sm" id="btn-open-search" title="Universal Search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <button class="btn btn-secondary btn-sm" id="btn-open-google-diag" title="Google OAuth Diagnostics">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </button>
+        <button class="btn btn-secondary btn-sm" id="btn-refresh" title="Refresh">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-content">
+
+      <!-- ==================== 1. HOME / DASHBOARD ==================== -->
+      <section id="screen-home" class="screen active">
+        <!-- Proactive Alerts Banner -->
+        <div id="home-proactive-alerts-container"></div>
+
+        <!-- Greeting & Status -->
+        <div style="margin-bottom: 14px;">
+          <h2 style="font-size: 22px; font-weight: 800; letter-spacing: -0.5px;" id="home-greeting">Good Day, Tharun</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">Your offline personal intelligence engine is active.</p>
+        </div>
+
+        <!-- Daily Briefing Quick Card -->
+        <div class="card" style="border-left: 4px solid #60A5FA; margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 14px;">Daily Intelligence Briefing</span>
+            <div style="display: flex; gap: 4px;">
+              <button class="btn btn-secondary btn-sm" id="btn-home-morning-brief" style="font-size: 11px; padding: 2px 8px;">Morning</button>
+              <button class="btn btn-secondary btn-sm" id="btn-home-evening-brief" style="font-size: 11px; padding: 2px 8px;">Evening</button>
+              <button class="btn btn-secondary btn-sm" id="btn-home-weekly-brief" style="font-size: 11px; padding: 2px 8px;">Weekly</button>
+            </div>
+          </div>
+          <div id="home-briefing-preview" style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+            Click Morning, Evening, or Weekly to synthesize an on-device personal briefing from your stored records.
+          </div>
+        </div>
+
+        <!-- Quick Capture Bar -->
+        <div class="quick-capture">
+          <input type="text" id="quick-capture-input" placeholder="Capture a thought, note, or task..." />
+          <div class="quick-actions-row">
+            <button class="btn btn-secondary btn-sm" id="btn-quick-memory">+ Memory</button>
+            <button class="btn btn-secondary btn-sm" id="btn-quick-note">+ Note</button>
+            <button class="btn btn-primary btn-sm" id="btn-quick-task">+ Task</button>
+          </div>
+        </div>
+
+        <!-- Quick Metrics -->
+        <div class="stat-grid" style="margin-bottom: 16px;">
+          <div class="stat-box" id="stat-memories-card" style="cursor: pointer;">
+            <div class="stat-value" id="home-stat-memories" style="color: var(--accent-cyan);">0</div>
+            <div class="stat-label">Memories</div>
+          </div>
+          <div class="stat-box" id="stat-tasks-card" style="cursor: pointer;">
+            <div class="stat-value" id="home-stat-tasks" style="color: var(--primary);">0</div>
+            <div class="stat-label">Active Tasks</div>
+          </div>
+          <div class="stat-box" id="stat-assignments-card" style="cursor: pointer;">
+            <div class="stat-value" id="home-stat-assignments" style="color: var(--accent-warning);">0</div>
+            <div class="stat-label">Assignments</div>
+          </div>
+          <div class="stat-box" id="stat-actions-card" style="cursor: pointer;">
+            <div class="stat-value" id="home-stat-actions" style="color: #34D399;">0</div>
+            <div class="stat-label">Actions</div>
+          </div>
+        </div>
+
+        <!-- Today's Schedule Card -->
+        <div class="card" style="border-left: 4px solid var(--primary); margin-bottom: 14px;">
+          <div class="card-title">
+            <span>Today's Academic Timetable</span>
+            <span class="badge badge-primary" id="today-day-label">Today</span>
+          </div>
+          <div id="home-timetable-container">
+            <div style="font-size: 13px; color: var(--text-muted); padding: 8px 0;">No classes scheduled for today.</div>
+          </div>
+        </div>
+
+        <!-- Upcoming Tasks & Deadlines -->
+        <div class="card" style="margin-bottom: 14px;">
+          <div class="card-title">
+            <span>Prioritized Tasks & Deadlines</span>
+            <button class="btn btn-secondary btn-sm" id="btn-home-view-all-tasks">View All</button>
+          </div>
+          <div id="home-tasks-container">
+            <div style="font-size: 13px; color: var(--text-muted); padding: 8px 0;">No pending tasks. You are all caught up!</div>
+          </div>
+        </div>
+
+        <!-- Recent Memories & Insights -->
+        <div class="card">
+          <div class="card-title">
+            <span>Recent Personal Memories</span>
+            <button class="btn btn-secondary btn-sm" id="btn-home-view-all-memories">View All</button>
+          </div>
+          <div id="home-memories-container">
+            <div style="font-size: 13px; color: var(--text-muted); padding: 8px 0;">No memories recorded yet. Use Quick Capture above.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 2. ASK CORTEX (CONVERSATIONAL ASSISTANT) ==================== -->
+      <section id="screen-assistant" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700;">Ask Cortex</h2>
+            <p style="color: var(--text-muted); font-size: 12px;">Your personal second brain assistant.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btn-new-chat">+ New Chat</button>
+        </div>
+
+        <!-- Quick Prompts Scroll -->
+        <div class="quick-prompts-scroll" id="quick-prompts-container">
+          <div class="prompt-chip" data-prompt="Do I have classes tomorrow?">Classes tomorrow?</div>
+          <div class="prompt-chip" data-prompt="What is pending in SeleneOS?">SeleneOS status</div>
+          <div class="prompt-chip" data-prompt="What should I complete first?">What's first?</div>
+          <div class="prompt-chip" data-prompt="Plan my day">Plan my day</div>
+          <div class="prompt-chip" data-prompt="Give me morning briefing">Morning Briefing</div>
+          <div class="prompt-chip" data-prompt="Should I learn Rust or Go next?">Evaluate Rust vs Go</div>
+          <div class="prompt-chip" data-prompt="Prepare a 5-day study plan">5-day study plan</div>
+        </div>
+
+        <!-- Chat Stream -->
+        <div class="chat-container">
+          <div class="chat-stream" id="assistant-chat-stream">
+            <div class="chat-bubble cortex">
+              Hello Tharun! I am Cortex, your personal second brain. I have contextual access to your timetable, coursework, projects (like SeleneOS), notes, and memories.<br><br>
+              How can I assist you today?
+              <div class="chat-meta">
+                <span class="badge badge-primary" style="font-size: 9px;">LOCAL_AI</span>
+                <span>Just now</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Input -->
+          <div class="chat-input-bar">
+            <input type="text" id="assistant-input" placeholder="Ask about classes, projects, plans, notes..." />
+            <button class="btn btn-primary btn-sm" id="btn-send-message" style="border-radius: var(--radius-full); padding: 0 16px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 3. ACTION APPROVAL CENTRE ==================== -->
+      <section id="screen-actions" class="screen">
+        <div style="margin-bottom: 14px;">
+          <h2 style="font-size: 20px; font-weight: 700;">Action Approval Centre</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">Review and confirm proposed automations before execution.</p>
+        </div>
+
+        <div class="subtabs">
+          <button class="subtab-btn active" data-subtab="pending-actions">Pending Approvals</button>
+          <button class="subtab-btn" data-subtab="action-history">Action History</button>
+        </div>
+
+        <div id="pane-actions-pending-actions">
+          <div id="pending-actions-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">No pending action proposals.</div>
+          </div>
+        </div>
+
+        <div id="pane-actions-action-history" style="display: none;">
+          <div id="action-history-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">No executed actions in history.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 4. DAILY & ADAPTIVE PLANNER ==================== -->
+      <section id="screen-planner" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700;">Personal Planner</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">Daily agendas, priority reasoning & adaptive study plans.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-generate-planner">Refresh Plan</button>
+        </div>
+
+        <div class="subtabs">
+          <button class="subtab-btn active" data-subtab="daily-agenda">Daily Agenda</button>
+          <button class="subtab-btn" data-subtab="adaptive-study">Adaptive Study Plan</button>
+        </div>
+
+        <!-- Daily Agenda Pane -->
+        <div id="pane-planner-daily-agenda">
+          <div id="daily-plan-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">Generating daily agenda...</div>
+          </div>
+        </div>
+
+        <!-- Adaptive Study Plan Pane -->
+        <div id="pane-planner-adaptive-study" style="display: none;">
+          <div class="card" style="margin-bottom: 12px;">
+            <div class="card-title">Adaptive Study Plan Generator</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+              Distributes textbook chapters and revision modules across your upcoming examination countdowns.
+            </div>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+              <div style="flex: 1;">
+                <label style="font-size: 11px; font-weight: 600;">Plan Days</label>
+                <input type="number" id="input-study-days" class="search-box" style="margin-bottom: 0;" value="5" min="1" max="14" />
+              </div>
+              <div style="flex: 1;">
+                <label style="font-size: 11px; font-weight: 600;">Daily Hours</label>
+                <input type="number" id="input-study-hours" class="search-box" style="margin-bottom: 0;" value="3.0" step="0.5" />
+              </div>
+            </div>
+            <button class="btn btn-primary btn-sm btn-block" id="btn-trigger-study-plan">Generate Study Schedule</button>
+          </div>
+          <div id="study-plan-results-container"></div>
+        </div>
+      </section>
+
+      <!-- ==================== 5. DECISION WORKSPACE ==================== -->
+      <section id="screen-decisions" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700;">Decision Workspace</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">10-point structured decision analysis separating facts from opinions.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-evaluate-decision">+ Evaluate</button>
+        </div>
+
+        <div id="decisions-list-container">
+          <div style="text-align: center; padding: 30px; color: var(--text-muted);">No evaluated decisions yet. Click "+ Evaluate" to analyze a decision.</div>
+        </div>
+      </section>
+
+      <!-- ==================== 6. MEMORY ENGINE ==================== -->
+      <section id="screen-memories" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700;">Personal Memory Engine</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">Long-term episodic, personal & academic knowledge.</p>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-secondary btn-sm" id="btn-check-conflicts" title="Check conflicting facts">Conflicts</button>
+            <button class="btn btn-primary btn-sm" id="btn-add-memory">+ Memory</button>
+          </div>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="filter-chips" id="memory-filter-chips">
+          <button class="filter-chip active" data-category="">All</button>
+          <button class="filter-chip" data-category="PERSONAL">Personal</button>
+          <button class="filter-chip" data-category="EPISODIC">Episodic</button>
+          <button class="filter-chip" data-category="ACADEMIC">Academic</button>
+          <button class="filter-chip" data-category="PROJECT">Project</button>
+          <button class="filter-chip" data-category="KNOWLEDGE">Knowledge</button>
+        </div>
+
+        <div id="memories-list-container">
+          <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading memories...</div>
+        </div>
+      </section>
+
+      <!-- ==================== 7. KNOWLEDGE VAULT ==================== -->
+      <section id="screen-knowledge" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700;">Knowledge Vault</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">Curated notes, documents & topic collections.</p>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-secondary btn-sm" id="btn-add-collection">+ Collection</button>
+            <button class="btn btn-primary btn-sm" id="btn-add-note">+ Note</button>
+          </div>
+        </div>
+
+        <div class="subtabs">
+          <button class="subtab-btn active" data-subtab="notes">Notes</button>
+          <button class="subtab-btn" data-subtab="documents">Documents</button>
+          <button class="subtab-btn" data-subtab="collections">Collections</button>
+        </div>
+
+        <div id="pane-knowledge-notes">
+          <div id="notes-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading notes...</div>
+          </div>
+        </div>
+
+        <div id="pane-knowledge-documents" style="display: none;">
+          <div id="documents-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">No ingested documents yet. Import via system share or file picker.</div>
+          </div>
+        </div>
+
+        <div id="pane-knowledge-collections" style="display: none;">
+          <div id="collections-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading collections...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 8. ACADEMIC INTELLIGENCE ==================== -->
+      <section id="screen-academics" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700;">Academic Intelligence</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">Coursework, subjects, timetable & exams.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-academic-action">+ Add</button>
+        </div>
+
+        <div class="subtabs">
+          <button class="subtab-btn active" data-subtab="timetable">Timetable</button>
+          <button class="subtab-btn" data-subtab="subjects">Subjects</button>
+          <button class="subtab-btn" data-subtab="assignments">Assignments</button>
+          <button class="subtab-btn" data-subtab="exams">Exams</button>
+          <button class="subtab-btn" data-subtab="profile">Profile</button>
+        </div>
+
+        <div id="pane-academic-timetable">
+          <div class="filter-chips" id="timetable-day-chips">
+            <button class="filter-chip active" data-day="1">Mon</button>
+            <button class="filter-chip" data-day="2">Tue</button>
+            <button class="filter-chip" data-day="3">Wed</button>
+            <button class="filter-chip" data-day="4">Thu</button>
+            <button class="filter-chip" data-day="5">Fri</button>
+            <button class="filter-chip" data-day="6">Sat</button>
+          </div>
+          <div id="timetable-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading timetable...</div>
+          </div>
+        </div>
+
+        <div id="pane-academic-subjects" style="display: none;">
+          <div id="subjects-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading subjects...</div>
+          </div>
+        </div>
+
+        <div id="pane-academic-assignments" style="display: none;">
+          <div id="assignments-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading assignments...</div>
+          </div>
+        </div>
+
+        <div id="pane-academic-exams" style="display: none;">
+          <div id="exams-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading examinations...</div>
+          </div>
+        </div>
+
+        <div id="pane-academic-profile" style="display: none;">
+          <div class="card" id="academic-profile-card">
+            <div class="card-title">Academic Profile</div>
+            <div id="academic-profile-details" style="font-size: 13px; color: var(--text-muted); line-height: 1.8;">Loading profile...</div>
+            <div style="margin-top: 14px;">
+              <button class="btn btn-secondary btn-sm" id="btn-edit-academic-profile">Edit Profile</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 9. DAILY LIFE & TASKS ==================== -->
+      <section id="screen-life" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700;">Daily Life & Goals</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">Manage tasks, responsibilities & personal goals.</p>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-secondary btn-sm" id="btn-add-goal">+ Goal</button>
+            <button class="btn btn-primary btn-sm" id="btn-add-task">+ Task</button>
+          </div>
+        </div>
+
+        <div class="subtabs">
+          <button class="subtab-btn active" data-subtab="tasks">Tasks</button>
+          <button class="subtab-btn" data-subtab="goals">Goals</button>
+        </div>
+
+        <div id="pane-life-tasks">
+          <div class="filter-chips" id="task-filter-chips">
+            <button class="filter-chip active" data-priority="">All</button>
+            <button class="filter-chip" data-priority="URGENT">Urgent</button>
+            <button class="filter-chip" data-priority="HIGH">High</button>
+            <button class="filter-chip" data-priority="MEDIUM">Medium</button>
+            <button class="filter-chip" data-priority="LOW">Low</button>
+          </div>
+          <div id="tasks-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading tasks...</div>
+          </div>
+        </div>
+
+        <div id="pane-life-goals" style="display: none;">
+          <div id="goals-list-container">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading goals...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 10. PROJECT INTELLIGENCE ==================== -->
+      <section id="screen-projects" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700;">Project Intelligence</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">Software projects (Cortex, SeleneOS), milestones & ADRs.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-add-project">+ Project</button>
+        </div>
+
+        <div id="projects-list-container">
+          <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading projects...</div>
+        </div>
+      </section>
+
+      <!-- ==================== 11. PERSONAL TIMELINE ==================== -->
+      <section id="screen-timeline" class="screen">
+        <div style="margin-bottom: 12px;">
+          <h2 style="font-size: 20px; font-weight: 700;">Personal Timeline</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">Chronological stream of your digital history and activities.</p>
+        </div>
+
+        <div class="filter-chips" id="timeline-filter-chips">
+          <button class="filter-chip active" data-type="">All Events</button>
+          <button class="filter-chip" data-type="MEMORY">Memories</button>
+          <button class="filter-chip" data-type="TASK">Tasks</button>
+          <button class="filter-chip" data-type="ACADEMIC">Academic</button>
+          <button class="filter-chip" data-type="PROJECT">Projects</button>
+        </div>
+
+        <div class="timeline-stream" id="timeline-stream-container">
+          <div style="padding: 20px; color: var(--text-muted);">Loading timeline...</div>
+        </div>
+      </section>
+
+      <!-- ==================== 12. LOCAL AI MODEL MANAGEMENT ==================== -->
+      <section id="screen-models" class="screen">
+        <div style="margin-bottom: 14px;">
+          <h2 style="font-size: 20px; font-weight: 700;">Local AI Engine</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">On-device offline model runtime and memory management.</p>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--accent-success); margin-bottom: 14px;">
+          <div class="card-title">
+            <span>Runtime Operational Status</span>
+            <span class="badge badge-success" id="ai-active-provider-badge">ACTIVE</span>
+          </div>
+          <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;" id="ai-status-explanation">
+            Deterministic offline reasoning engine active. All RAG, search, briefings, planning, and contextual Q&A operate 100% locally.
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-bottom: 8px;">Quantized Edge Models for ARM64</div>
+        <div id="models-list-container"></div>
+      </section>
+
+      <!-- ==================== 13. CONNECTORS & INTEGRATION ==================== -->
+      <section id="screen-connectors" class="screen">
+        <div style="margin-bottom: 16px;">
+          <h2 style="font-size: 20px; font-weight: 700;">Digital Connectors</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">Installed app access, system providers & background sync.</p>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px;">
+          <button class="btn btn-primary btn-sm" id="btn-nav-app-selection">Select Apps</button>
+          <button class="btn btn-secondary btn-sm" id="btn-nav-permissions">Permissions</button>
+          <button class="btn btn-secondary btn-sm" id="btn-nav-google">Google Cloud</button>
+          <button class="btn btn-secondary btn-sm" id="btn-nav-sync">Sync History</button>
+          <button class="btn btn-secondary btn-sm" id="btn-nav-privacy">Financial Blocklist</button>
+        </div>
+
+        <div id="connectors-list-container">
+          <div style="text-align: center; padding: 30px; color: var(--text-muted);">Loading connectors...</div>
+        </div>
+      </section>
+
+      <!-- ==================== 14. SETTINGS & DEVICE SPECS ==================== -->
+      <section id="screen-settings" class="screen">
+        <div style="margin-bottom: 16px;">
+          <h2 style="font-size: 20px; font-weight: 700;">Settings & Device Specs</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">Local database maintenance & system configuration.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Target Device & Runtime</div>
+          <div class="card-desc" style="line-height: 1.8;">
+            <strong>Target Phone:</strong> Infinix (Android 14 / API 34)<br>
+            <strong>Architecture:</strong> ARM64-v8a (Verified)<br>
+            <strong>RAM / Storage:</strong> 12 GB RAM / 256 GB Storage<br>
+            <strong>Embedded Python:</strong> Chaquopy (Python 3.11/3.13 ABI compatible)<br>
+            <strong>Persistence Engine:</strong> Kotlin Room SQLite (Schema v3 with explicit MIGRATIONS)<br>
+            <strong>Data Privacy:</strong> 100% Offline Local Device Storage
+          </div>
+        </div>
+
+        <div class="card" style="border: 1px solid rgba(239, 68, 68, 0.4);">
+          <div class="card-title" style="color: var(--accent-danger);">Nuclear Local Data Wipe</div>
+          <div class="card-desc" style="margin-bottom: 12px;">
+            Permanently delete all memories, notes, conversations, actions, tasks, projects, and sync events from Cortex database.
+          </div>
+          <button class="btn btn-danger btn-sm" id="btn-wipe-all">Wipe All Local Data</button>
+        </div>
+      </section>
+
+      <!-- ==================== PHASE 1 SCREENS PRESERVED ==================== -->
+      <section id="screen-selection" class="screen">
+        <div style="margin-bottom: 14px;">
+          <h2 style="font-size: 20px; font-weight: 700;">Application Access Control</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">Select which applications Cortex is authorized to integrate with.</p>
+        </div>
+        <input type="text" id="app-search-input" class="search-box" placeholder="Search applications..." />
+        <div style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+          <button class="btn btn-secondary btn-sm" id="btn-select-all-supported">Select All Supported</button>
+          <button class="btn btn-secondary btn-sm" id="btn-deselect-all">Deselect All</button>
+          <button class="btn btn-primary btn-sm" style="margin-left: auto;" id="btn-save-selections">Save Selections</button>
+        </div>
+        <div id="selection-categories-container"></div>
+      </section>
+
+      <section id="screen-permissions" class="screen">
+        <div style="margin-bottom: 16px;">
+          <h2 style="font-size: 20px; font-weight: 700;">Permission Management</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">Cortex requires explicit system access to collect authorized data.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <span>Notification Listener Access</span>
+            <span id="perm-badge-notification" class="badge badge-warning">Pending</span>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-grant-notification" style="margin-top: 8px;">Configure in Android Settings</button>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <span>Calendar Provider (Read-Only)</span>
+            <span id="perm-badge-calendar" class="badge badge-warning">Pending</span>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-grant-calendar" style="margin-top: 8px;">Request Calendar Permission</button>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <span>Contacts Provider (Read-Only)</span>
+            <span id="perm-badge-contacts" class="badge badge-warning">Pending</span>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-grant-contacts" style="margin-top: 8px;">Request Contacts Permission</button>
+        </div>
+      </section>
+
+      <section id="screen-privacy" class="screen">
+        <div style="margin-bottom: 16px;">
+          <h2 style="font-size: 20px; font-weight: 700;">Financial Protection Denylist</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">Non-negotiable security boundary for banking and payment apps.</p>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--accent-danger);">
+          <div class="card-title" style="color: var(--accent-danger);">Permanent Exclusion Policy</div>
+          <div class="card-desc">
+            All banking, UPI (GPay, PhonePe, Paytm), crypto, and wallet applications are permanently blocked from memory ingestion, notification monitoring, and search indexing.
+          </div>
+        </div>
+        <div id="financial-exclusions-container"></div>
+      </section>
+
+      <section id="screen-sync" class="screen">
+        <div style="margin-bottom: 16px;">
+          <h2 style="font-size: 20px; font-weight: 700;">Synchronization Events</h2>
+          <p style="color: var(--text-muted); font-size: 13px;">Background WorkManager status and connector sync records.</p>
+        </div>
+        <div id="sync-history-container">
+          <div style="padding: 20px; color: var(--text-muted);">Loading sync history...</div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Side-Scrollable Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-target="screen-home">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-target="screen-assistant">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Ask AI</span>
+      </button>
+      <button class="nav-item" data-target="screen-actions">
+        <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>Actions</span>
+      </button>
+      <button class="nav-item" data-target="screen-planner">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Planner</span>
+      </button>
+      <button class="nav-item" data-target="screen-decisions">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+        <span>Decisions</span>
+      </button>
+      <button class="nav-item" data-target="screen-memories">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg>
+        <span>Memory</span>
+      </button>
+      <button class="nav-item" data-target="screen-knowledge">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>Vault</span>
+      </button>
+      <button class="nav-item" data-target="screen-academics">
+        <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        <span>Academic</span>
+      </button>
+      <button class="nav-item" data-target="screen-life">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Tasks</span>
+      </button>
+      <button class="nav-item" data-target="screen-projects">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        <span>Projects</span>
+      </button>
+      <button class="nav-item" data-target="screen-timeline">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Timeline</span>
+      </button>
+      <button class="nav-item" data-target="screen-models">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+        <span>Local AI</span>
+      </button>
+      <button class="nav-item" data-target="screen-connectors">
+        <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span>Connect</span>
+      </button>
+      <button class="nav-item" data-target="screen-settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Device</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Universal Search Overlay -->
+  <div id="search-overlay-modal" class="search-overlay-modal">
+    <div class="search-header-row">
+      <input type="text" id="universal-search-input" class="search-box" style="margin-bottom: 0;" placeholder="Search all memories, notes, tasks, subjects..." autofocus />
+      <button class="btn btn-secondary btn-sm" id="btn-close-search">Close</button>
+    </div>
+    <div style="font-size: 12px; color: var(--text-dim); margin-bottom: 10px;" id="search-status-text">
+      Type at least 2 characters to search across your second brain.
+    </div>
+    <div class="search-results-container" id="universal-search-results"></div>
+  </div>
+
+  <!-- Google Diagnostics Modal -->
+  <div id="google-diag-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="card-title">
+        <span>Google Cloud Integration Diagnostics</span>
+        <button class="btn btn-secondary btn-sm" id="btn-close-google-diag">&times;</button>
+      </div>
+      <div style="margin: 12px 0; font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+        <div style="margin-bottom: 8px;">
+          <strong style="color: var(--text-main);">OAuth Application ID:</strong>
+          <div class="code-box">com.cortex.app</div>
+        </div>
+        <div style="margin-bottom: 8px;">
+          <strong style="color: var(--text-main);">Debug Signing Key SHA-1:</strong>
+          <div class="code-box">27:D8:78:6A:62:87:A3:4D:FF:3E:6F:BF:76:F6:61:F2:42:B8:16:BD</div>
+        </div>
+        <div style="margin-bottom: 8px;">
+          <strong style="color: var(--text-main);">Custom OAuth Redirect URI:</strong>
+          <div class="code-box">com.cortex.app://oauth2callback</div>
+        </div>
+        <div class="card-title" style="margin: 14px 0 8px;">Service Status Checklist</div>
+        <div id="google-diag-services-container"></div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+        <button class="btn btn-primary btn-sm" id="btn-confirm-google-diag">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/bridge.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
